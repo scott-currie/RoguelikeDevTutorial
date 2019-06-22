@@ -1,5 +1,5 @@
 import tcod
-from roguelike.map import Map
+from roguelike.map.map import Map
 
 
 def main():
@@ -9,11 +9,18 @@ def main():
     tcod.console_set_custom_font('arial10x10.png', tcod.FONT_TYPE_GREYSCALE | tcod.FONT_LAYOUT_TCOD)
     tcod.console_init_root(SCR_WIDTH, SCR_HEIGHT, 'My cool console.', order='F')
     tcod.console_set_default_foreground(0, tcod.yellow)
-    p_char = '@'
-    x_pos, y_pos = SCR_WIDTH // 2, SCR_HEIGHT // 2
-    x_pos_prev, y_pos_prev = -1, -1
     
     lvl_map = Map(SCR_HEIGHT - 1, SCR_WIDTH)
+    
+    p_char = '@'
+    for y, row in enumerate(lvl_map.terrain):
+        for x, col in enumerate(row):
+            if col == '.':
+                x_pos, y_pos = x, y
+                break
+    x_pos_prev, y_pos_prev = -1, -1
+    
+
     tcod.console_print(0, 0, 0, ''.join([''.join(s) + '\n' for s in lvl_map.terrain]))
     while not tcod.console_is_window_closed():
         tcod.console_put_char(0, x_pos, y_pos, p_char, tcod.BKGND_NONE)

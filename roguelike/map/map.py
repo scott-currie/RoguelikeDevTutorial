@@ -1,9 +1,12 @@
+import random
+
 class Map():
     def __init__(self, rows, cols):
         self.height = rows
         self.width = cols
         self.terrain = [['.'] * cols for _ in range(rows)]
         self.make_walls()
+        self.make_obstacles()
 
 
     def make_walls(self):
@@ -13,6 +16,16 @@ class Map():
                     self.terrain[i][j] = '#'
                 if j == 0 or j == len(self.terrain[i]) - 1:
                     self.terrain[i][j] = '#'
+
+
+    def make_obstacles(self):
+        obstacles = set()
+        n_obs = int((self.height - 2) * (self.width - 2) * .2) 
+        while len(obstacles) < n_obs:
+            space = random.randint(1, self.width - 2), random.randint(1, self.height - 2)
+            obstacles.add(space)
+            self.terrain[space[1]][space[0]] = 'X'
+
 
     def space_is_in_bounds(self, x, y):
         if x > 0 and x < self.width - 1:
@@ -26,5 +39,4 @@ class Map():
 
 
     def space_is_legal(self, x, y):
-        print(f'Checking if {x},{y} is legal.')
         return self.space_is_in_bounds(x, y) and self.space_is_passable(x, y)
