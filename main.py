@@ -1,5 +1,7 @@
 import tcod
-from roguelike.map.map import Map
+from roguelike.map import Map
+from roguelike.space import Space
+from roguelike.player import Player
 
 
 def main():
@@ -12,7 +14,6 @@ def main():
     
     lvl_map = Map(SCR_HEIGHT - 1, SCR_WIDTH)
     
-    p_char = '@'
     for y, row in enumerate(lvl_map.terrain):
         for x, col in enumerate(row):
             if col == '.':
@@ -20,10 +21,12 @@ def main():
                 break
     x_pos_prev, y_pos_prev = -1, -1
     
-
     tcod.console_print(0, 0, 0, ''.join([''.join(s) + '\n' for s in lvl_map.terrain]))
+    
+    player = Player()
+    
     while not tcod.console_is_window_closed():
-        tcod.console_put_char(0, x_pos, y_pos, p_char, tcod.BKGND_NONE)
+        tcod.console_put_char(0, x_pos, y_pos, player.symbol, tcod.BKGND_NONE)
         tcod.console_flush()
         kp = tcod.console_check_for_keypress()
         next_x_pos = x_pos
