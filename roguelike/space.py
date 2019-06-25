@@ -3,3 +3,7 @@ class Space(object):
         self.x = col
         self.y = row
         self.terrain = terrain
+        self.n = None
+        self.s = None
+        self.e = None
+        self.w = None
