@@ -50,8 +50,15 @@ def main():
             show_neigbors(lvl_map, player)
 
 def show_neigbors(lvl_map, player):
-    print(f'n={lvl_map.spaces[player.y][player.x].n},e={lvl_map.spaces[player.y][player.x].e},s={lvl_map.spaces[player.y][player.x].s},w={lvl_map.spaces[player.y][player.x].w}')
-
+    if lvl_map.spaces[player.y][player.x].n:
+        print(f'n={lvl_map.spaces[player.y][player.x].n.loc}')
+    if lvl_map.spaces[player.y][player.x].e:
+        print(f'e={lvl_map.spaces[player.y][player.x].e.loc}')
+    if lvl_map.spaces[player.y][player.x].s:
+        print(f's={lvl_map.spaces[player.y][player.x].s.loc}')
+    if lvl_map.spaces[player.y][player.x].w:
+        print(f'w={lvl_map.spaces[player.y][player.x].w.loc}')
+    print('=' * 20)
 
 
 if __name__ == '__main__':
