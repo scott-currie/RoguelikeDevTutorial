@@ -7,23 +7,37 @@ class Map():
         self.width = cols
         self.spaces = self.make_spaces()
         self.make_walls()
-        self.make_obstacles()
+        # self.make_obstacles()
 
 
     def make_spaces(self):
-        ''' Generate and link space objects into the map table.
+        ''' Generate and link space objects into map.spaces
         '''
         # Init spaces to a table of Nones
-        spaces = [[None for _ in range(self.width)] for _ in range(self.height)]
+        # spaces = [[None for _ in range(self.width)] for _ in range(self.height)]
+        spaces = []
         for row in range(self.height):
+            # line holds items for this row
+            line = []
             for col in range(self.width):
+                spaces.append(line)
                 new_space = Space(row, col)
-                # import pdb; pdb.set_trace()
+                line.append(new_space)
                 if row > 0:
-                    new_space.n = spaces[col][row - 1]
+                    # Link to space to the north
+                    north = spaces[col][row - 1]
+                    new_space.n = north
+                    # If there is a space to the north, link it to new_space
+                    if north is not None:
+                        north.s = new_space
                 if col > 0:
-                    new_space.w = spaces[col - 1][row]
-                spaces[row][col] = new_space
+                    # Link space to the west
+                    west = line[col - 1]
+                    new_space.w = west
+                    # If there's a space to the west, link it to new_space
+                    if west is not None:
+                        west.e = new_space
+        print('Linked all the spaces!')
         return spaces
 
 
@@ -40,8 +54,10 @@ class Map():
         obstacles = set()
         n_obs = int((self.height - 2) * (self.width - 2) * .2) 
         while len(obstacles) < n_obs:
+            print('Still making obstacles!')
             space = random.randint(1, self.width - 2), random.randint(1, self.height - 2)
             obstacles.add(space)
+            print(len(obstacles))
             self.spaces[space[1]][space[0]].terrain = 'X'
 
 
@@ -61,7 +77,8 @@ class Map():
 
 
     def get_random_legal_space(self):
-        space = 0, 0
-        while self.spaces[space[0]][space[1]].terrain != '.':
+        space = -1, -1
+        while self.space_is_legal(space[0], space[1]):
             space = random.randint(1, self.width - 1), random.randint(1, self.height - 1)
+            print('Finding legal space!')
         return space
