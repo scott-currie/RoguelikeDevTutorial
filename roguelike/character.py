@@ -5,7 +5,6 @@ class Character(object):
         self.y = y
         self.y_prev = -1
         self.loc = self.x, self.y
-        
 
     def move(self, dest_x, dest_y):
         self.x = dest_x

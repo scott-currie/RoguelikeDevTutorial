@@ -2,6 +2,7 @@ from roguelike.space import Space
 import random
 import sys
 
+
 class Map():
     def __init__(self, rows, cols):
         self.height = rows
@@ -10,7 +11,6 @@ class Map():
         self.make_walls()
         self.print_terrain()
         self.make_obstacles()
-
 
     def make_spaces(self):
         ''' Generate and link space objects into map.spaces
@@ -43,7 +43,6 @@ class Map():
         print('Made spaces.')
         return spaces
 
-
     def make_walls(self):
         print('Making walls.')
         for i in range(len(self.spaces)):
@@ -59,9 +58,10 @@ class Map():
     def make_obstacles(self):
         print('Making obstacles.')
         obstacles = set()
-        n_obs = int((self.height - 2) * (self.width - 2) * .2) 
+        n_obs = int((self.height - 2) * (self.width - 2) * .2)
         while len(obstacles) < n_obs:
-            space = random.randint(1, self.width - 2), random.randint(1, self.height - 2)
+            space = random.randint(
+                1, self.width - 2), random.randint(1, self.height - 2)
             obstacles.add(space)
             print(len(obstacles))
             self.spaces[space[1]][space[0]].terrain = 'X'
@@ -72,23 +72,20 @@ class Map():
             if y > 0 and y < self.height - 1:
                 return True
         return False
-    
-    
+
     def space_is_passable(self, x, y):
         return self.spaces[y][x].terrain == '.'
-
 
     def space_is_legal(self, x, y):
         return self.space_is_in_bounds(x, y) and self.space_is_passable(x, y)
 
-
     def get_random_legal_space(self):
         while True:
-            x, y = random.randint(1, self.width - 1), random.randint(1, self.height - 1)
+            x, y = random.randint(
+                1, self.width - 1), random.randint(1, self.height - 1)
             # print(f'{x},{y},{self.spaces[y][x].terrain}')
             if self.space_is_legal(x, y):
                 return (x, y)
-
 
     def print_terrain(self):
         # print(''.join([''.join([space.terrain] + '\n') for space in self.spaces]))
