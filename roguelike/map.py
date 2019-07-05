@@ -45,14 +45,11 @@ class Map():
 
     def make_walls(self):
         print('Making walls.')
-        for i in range(len(self.spaces)):
-            for j in range(len(self.spaces[0])):
-                if (i == 0 or i == self.height - 1) or (j == 0 or j == self.width - 1):
-                    self.spaces[i][j].terrain = '#'
-                    print(f'wall@({j},{i})')
-                # if j == 0 or j == self.width - 1:
-                #     self.spaces[i][j].terrain = '#'
-                #     print(f'wall@({j},{i})')
+        for row in range(len(self.spaces)):
+            for col in range(len(self.spaces[0])):
+                if (col == 0 or col == self.height - 1) or (row == 0 or row == self.width - 1):
+                    self.spaces[row][col].terrain = '#'
+                    print(f'wall@({row},{col})')
         print('Made walls.')
 
     def make_obstacles(self):
@@ -67,28 +64,26 @@ class Map():
             self.spaces[space[1]][space[0]].terrain = 'X'
         print('Made obstaccles.')
 
-    def space_is_in_bounds(self, x, y):
-        if x > 0 and x < self.width - 1:
-            if y > 0 and y < self.height - 1:
+    def space_is_in_bounds(self, row, col):
+        if col > 0 and col < self.width - 1:
+            if row > 0 and row < self.height - 1:
                 return True
         return False
 
-    def space_is_passable(self, x, y):
-        return self.spaces[y][x].terrain == '.'
+    def space_is_passable(self, row, col):
+        return self.spaces[row][col].terrain == '.'
 
-    def space_is_legal(self, x, y):
-        return self.space_is_in_bounds(x, y) and self.space_is_passable(x, y)
+    def space_is_legal(self, row, col):
+        return self.space_is_in_bounds(row, col) and self.space_is_passable(row, col)
 
     def get_random_legal_space(self):
         while True:
-            x, y = random.randint(
-                1, self.width - 1), random.randint(1, self.height - 1)
-            # print(f'{x},{y},{self.spaces[y][x].terrain}')
-            if self.space_is_legal(x, y):
-                return (x, y)
+            row, col = random.randint(
+                1, self.height - 1), random.randint(1, self.width - 1)
+            if self.space_is_legal(row, col):
+                return (row, col)
 
     def print_terrain(self):
-        # print(''.join([''.join([space.terrain] + '\n') for space in self.spaces]))
         for row in self.spaces:
             for space in row:
                 sys.stdout.write(space.terrain + ' ')
