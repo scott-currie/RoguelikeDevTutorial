@@ -4,8 +4,11 @@ class Character(object):
         self.x_prev = -1
         self.y = y
         self.y_prev = -1
-        self.loc = self.x, self.y
+        # self.loc = self.x, self.y
+        self.x_next = self.x
+        self.y_next = self.y
 
     def move(self, dest_x, dest_y):
         self.x = dest_x
         self.y = dest_y
+
