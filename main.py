@@ -4,11 +4,10 @@ from roguelike.space import Space
 from roguelike.player import Player
 from roguelike.engine import Engine
 
+SCR_WIDTH = 20
+SCR_HEIGHT = 21
 
 def main():
-    SCR_WIDTH = 20
-    SCR_HEIGHT = 21
-
     tcod.console_set_custom_font(
         'arial10x10.png', tcod.FONT_TYPE_GREYSCALE | tcod.FONT_LAYOUT_TCOD)
     tcod.console_init_root(SCR_WIDTH, SCR_HEIGHT,
@@ -27,6 +26,7 @@ def main():
     print('Ready to enter main loop.')
     # Enter main loop
     while not tcod.console_is_window_closed():
+        tcod.console_set_default_foreground(0, tcod.white)
         tcod.console_put_char(0, player.col, player.row,
                               player.symbol, tcod.BKGND_NONE)
         kp = tcod.console_check_for_keypress()
@@ -42,24 +42,26 @@ def main():
             player.col_next -= 1
         # Do player move if next position dfferent than current
         if player.col_next != player.col or player.row_next != player.row:
-            if lvl_map.space_is_legal(player.col_next, player.row_next):
+            if lvl_map.space_is_legal(player.row_next, player.col_next):
+                # Draw terrain in current space
+                tcod.console_set_default_foreground(0, tcod.yellow)
+                tcod.console_put_char(0, player.col, player.row,
+                                      lvl_map.spaces[player.row][player.col].terrain, tcod.BKGND_NONE)
                 # Current position becomes next position
                 player.move(player.row_next, player.col_next)
-                # Print position at bottom of window
-                tcod.console_print(
-                    0, 0, SCR_HEIGHT - 1, 'row=' + str(player.row).zfill(2) + ',col=' + str(player.row).zfill(2))
-                # show_neigbors(lvl_map, player)
-                # Draw terrain in space just vacated
-                tcod.console_put_char(0, player.col_prev, player.row_prev,
-                                      lvl_map.spaces[player.row_prev][player.col_prev].terrain, tcod.BKGND_NONE)
-                # Set prev space to current
-                player.col_prev, player.row_prev = player.col, player.row
-                # Set next space to current
-                player.col_next, player.row_next = player.col, player.row
             else:
                 print(f'Can\'t go to {player.row_next, player.col_next}')
+            player.col_next, player.row_next = player.col, player.row
+
+        # Update the player position
+        update_position_display(player)
         tcod.console_flush()
 
+def update_position_display(player):
+    '''Print player position on last line of the console.'''
+    tcod.console_set_default_foreground(0, tcod.green)
+    tcod.console_print(
+        0, 0, SCR_HEIGHT - 1, 'x=' + str(player.col).zfill(2) + ',y=' + str(SCR_HEIGHT - 1 - player.row).zfill(2))
 
 if __name__ == '__main__':
     main()
