@@ -1,14 +1,13 @@
 class Character(object):
-    def __init__(self, x, y):
-        self.x = x
-        self.x_prev = -1
-        self.y = y
-        self.y_prev = -1
-        # self.loc = self.x, self.y
-        self.x_next = self.x
-        self.y_next = self.y
+    def __init__(self, row, col):
+        self.col = col
+        self.col_prev = -1
+        self.col_next = -1
+        self.row = row
+        self.row_prev = -1
+        self.row_next = -1
+        self.loc = self.row, self.col
 
-    def move(self, dest_x, dest_y):
-        self.x = dest_x
-        self.y = dest_y
-
+    def move(self, dest_row, dest_col):
+        self.col = dest_col
+        self.row = dest_row
