@@ -1,55 +1,42 @@
 from roguelike.space import Space
 import random
 import sys
+from tcod.map import Map as _Map
+import numpy as np
 
 
-class Map():
-    def __init__(self, rows, cols):
+class Map(_Map):
+    def __init__(self, cols, rows):
+        super().__init__(rows, cols, order='C')
         self.height = rows
         self.width = cols
         self.spaces = self.make_spaces()
         self.make_walls()
-        self.print_terrain()
-        self.make_obstacles()
+        # self.print_terrain()
+        # self.make_obstacles()
 
     def make_spaces(self):
         ''' Generate and link space objects into map.spaces
         '''
         print('Making spaces.')
-        spaces = []
+        spaces = np.empty((self.height, self.width), dtype=Space)
         # Make a list of rows (height)
         for row in range(self.height):
-            # line holds items for this row
-            line = []
-            spaces.append(line)
             for col in range(self.width):
-
-                new_space = Space(col, row)
-                line.append(new_space)
-                if row > 0:
-                    # Link to space to the north
-                    north = spaces[row - 1][col]
-                    new_space.n = north
-                    # If there is a space to the north, link it to new_space
-                    if north is not None:
-                        north.s = new_space
-                if col > 0:
-                    # Link space to the west
-                    west = line[col - 1]
-                    new_space.w = west
-                    # If there's a space to the west, link it to new_space
-                    if west is not None:
-                        west.e = new_space
+                spaces[row][col] = Space(col, row)
+                self.walkable[row][col] = True
         print('Made spaces.')
         return spaces
 
+
     def make_walls(self):
         print('Making walls.')
-        for row in range(len(self.spaces)):
-            for col in range(len(self.spaces[0])):
+        for row in range(self.height):
+            for col in range(self.width):
                 if (col == 0 or col == self.height - 1) or (row == 0 or row == self.width - 1):
                     self.spaces[row][col].terrain = '#'
-                    print(f'wall@({row},{col})')
+                    self.walkable[row][col] = False
+                    # print(f'wall@({row},{col})')
         print('Made walls.')
 
     def make_obstacles(self):
@@ -70,11 +57,11 @@ class Map():
                 return True
         return False
 
-    def space_is_passable(self, row, col):
-        return self.spaces[row][col].terrain == '.'
+    # def space_is_passable(self, row, col):
+    #     return self.walkable[row][col]
 
     def space_is_legal(self, row, col):
-        return self.space_is_in_bounds(row, col) and self.space_is_passable(row, col)
+        return self.space_is_in_bounds(row, col) and self.walkable[row][col]
 
     def get_random_legal_space(self):
         while True:
