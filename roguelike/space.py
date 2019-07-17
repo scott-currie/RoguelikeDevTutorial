@@ -1,8 +1,8 @@
 class Space(object):
     def __init__(self, col, row, terrain='.'):
-        self.x = col
-        self.y = row
-        self.loc = (self.x, self.y)
+        self.col = col
+        self.row = row
+        # self.loc = (self.x, self.y)
         self.terrain = terrain
         self.n = None
         self.s = None
