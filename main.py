@@ -22,55 +22,43 @@ def main():
     # Print map to console
     for row in lvl_map.spaces:
         for space in row:
-            tcod.console_put_char(0, space.x, space.y,
+            tcod.console_put_char(0, space.col, space.row,
                                   space.terrain, tcod.BKGND_NONE)
     print('Ready to enter main loop.')
     # Enter main loop
     while not tcod.console_is_window_closed():
-        tcod.console_put_char(0, player.x, player.y,
+        tcod.console_put_char(0, player.col, player.row,
                               player.symbol, tcod.BKGND_NONE)
         kp = tcod.console_check_for_keypress()
         if kp.vk == tcod.KEY_ESCAPE:
             return True
         elif kp.vk == tcod.KEY_DOWN:
-            player.y_next += 1
+            player.row_next += 1
         elif kp.vk == tcod.KEY_UP:
-            player.y_next -= 1
+            player.row_next -= 1
         elif kp.vk == tcod.KEY_RIGHT:
-            player.x_next += 1
+            player.col_next += 1
         elif kp.vk == tcod.KEY_LEFT:
-            player.x_next -= 1
+            player.col_next -= 1
         # Do player move if next position dfferent than current
-        if player.x_next != player.x or player.y_next != player.y:
-            if lvl_map.space_is_legal(player.x_next, player.y_next):
+        if player.col_next != player.col or player.row_next != player.row:
+            if lvl_map.space_is_legal(player.col_next, player.row_next):
                 # Current position becomes next position
-                player.move(player.x_next, player.y_next)
+                player.move(player.row_next, player.col_next)
                 # Print position at bottom of window
                 tcod.console_print(
-                    0, 0, SCR_HEIGHT - 1, str(player.x).zfill(2) + ',' + str(player.y).zfill(2))
-                show_neigbors(lvl_map, player)
+                    0, 0, SCR_HEIGHT - 1, 'row=' + str(player.row).zfill(2) + ',col=' + str(player.row).zfill(2))
+                # show_neigbors(lvl_map, player)
                 # Draw terrain in space just vacated
-                tcod.console_put_char(0, player.x_prev, player.y_prev,
-                                      lvl_map.spaces[player.y_prev][player.x_prev].terrain, tcod.BKGND_NONE)
+                tcod.console_put_char(0, player.col_prev, player.row_prev,
+                                      lvl_map.spaces[player.row_prev][player.col_prev].terrain, tcod.BKGND_NONE)
                 # Set prev space to current
-                player.x_prev, player.y_prev = player.x, player.y
+                player.col_prev, player.row_prev = player.col, player.row
                 # Set next space to current
-                player.x_next, player.y_next = player.x, player.y
-
+                player.col_next, player.row_next = player.col, player.row
+            else:
+                print(f'Can\'t go to {player.row_next, player.col_next}')
         tcod.console_flush()
-
-
-def show_neigbors(lvl_map, player):
-    print(f'@=({player.x},{player.y})')
-    if lvl_map.spaces[player.y][player.x].n:
-        print(f'n={lvl_map.spaces[player.y][player.x].n.loc}')
-    if lvl_map.spaces[player.y][player.x].e:
-        print(f'e={lvl_map.spaces[player.y][player.x].e.loc}')
-    if lvl_map.spaces[player.y][player.x].s:
-        print(f's={lvl_map.spaces[player.y][player.x].s.loc}')
-    if lvl_map.spaces[player.y][player.x].w:
-        print(f'w={lvl_map.spaces[player.y][player.x].w.loc}')
-    print('=' * 20)
 
 
 if __name__ == '__main__':
