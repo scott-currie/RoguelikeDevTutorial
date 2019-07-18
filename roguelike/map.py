@@ -45,7 +45,6 @@ class Map(_Map):
             space = random.randint(
                 1, self.width - 2), random.randint(1, self.height - 2)
             obstacles.add(space)
-            print(len(obstacles))
             self.spaces[space[1]][space[0]].terrain = 'X'
             self.walkable[space[1]][space[0]] = False
         print('Made obstaccles.')
