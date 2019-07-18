@@ -3,6 +3,7 @@ import random
 import sys
 from tcod.map import Map as _Map
 import numpy as np
+import tcod.console
 
 
 class Map(_Map):
@@ -64,3 +65,15 @@ class Map(_Map):
                 1, self.height - 1), random.randint(1, self.width - 1)
             if self.space_is_legal(row, col):
                 return (row, col)
+
+    def render(self):
+        for row in self.spaces:
+            for space in row:
+                tcod.console_put_char(0, space.col, space.row,
+                                    space.terrain, tcod.BKGND_NONE)
+
+    def render_at(self, row, col):
+        # Draw terrain in current space
+        tcod.console_set_default_foreground(0, tcod.yellow)
+        tcod.console_put_char(0, col, row,
+                                self.spaces[row][col].terrain, tcod.BKGND_NONE)        
