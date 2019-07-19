@@ -2,6 +2,7 @@ from .character import Character
 from .player import Player
 import tcod
 
+
 class Monster(Character):
     def __init__(self, x, y):
         super().__init__(x, y)

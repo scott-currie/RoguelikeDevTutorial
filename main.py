@@ -4,7 +4,7 @@ from roguelike.space import Space
 from roguelike.player import Player
 from roguelike.monster import Monster
 import time
-# from roguelike.engine import Engine
+
 
 SCR_WIDTH = 20
 SCR_HEIGHT = 21
@@ -41,7 +41,6 @@ def main():
         # Move the actors
         if actor.move(kp, lvl_map, actors):
             next_actor = True
-            # time.sleep(1)
         # Render the actors
         actor.render()
 
@@ -49,7 +48,6 @@ def main():
             print(f'Pushing {actor} into the queue.')
             actors.insert(0, actor)
             print('Actors after push:', actors)
-            # next_actor = True
         # Update the actor position
         update_position_display(player)
         tcod.console_flush()

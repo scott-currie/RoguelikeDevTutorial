@@ -69,10 +69,10 @@ class Map(_Map):
         for row in self.spaces:
             for space in row:
                 tcod.console_put_char(0, space.col, space.row,
-                                    space.terrain, tcod.BKGND_NONE)
+                                      space.terrain, tcod.BKGND_NONE)
 
     def render_at(self, row, col):
         # Draw terrain in current space
         tcod.console_set_default_foreground(0, tcod.yellow)
         tcod.console_put_char(0, col, row,
-                                self.spaces[row][col].terrain, tcod.BKGND_NONE)        
+                              self.spaces[row][col].terrain, tcod.BKGND_NONE)
