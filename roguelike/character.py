@@ -1,6 +1,7 @@
 import abc
 import tcod
 
+
 class Character(object):
     def __init__(self, row, col):
         self.col = col
@@ -18,8 +19,9 @@ class Character(object):
     def move(self, kp, lvl_map, actors):
         moved = False
         self.row_next, self.col_next = self.get_dest(kp, lvl_map, actors)
-        if (self.row_next, self.col_next) == (self.row, self.col):
-            return False
+        if not hasattr(self, 'is_adjacent_player'):
+            if (self.row_next, self.col_next) == (self.row, self.col):
+                return False
         # Do self move if next position dfferent than current
         if lvl_map.space_is_legal(self.row_next, self.col_next):
             # Put terrain symbol back in vacant space
