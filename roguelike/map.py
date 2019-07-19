@@ -1,3 +1,4 @@
+import logging
 from roguelike.space import Space
 import random
 import sys
@@ -18,27 +19,27 @@ class Map(_Map):
     def make_spaces(self):
         ''' Generate and link space objects into map.spaces
         '''
-        print('Making spaces.')
+        logging.debug('Making spaces.')
         spaces = np.empty((self.height, self.width), dtype=Space)
         # Make a list of rows (height)
         for row in range(self.height):
             for col in range(self.width):
                 spaces[row][col] = Space(col, row)
                 self.walkable[row][col] = True
-        print('Made spaces.')
+        logging.debug('Made spaces.')
         return spaces
 
     def make_walls(self):
-        print('Making walls.')
+        logging.debug('Making walls.')
         for row in range(self.height):
             for col in range(self.width):
                 if (col == 0 or col == self.height - 1) or (row == 0 or row == self.width - 1):
                     self.spaces[row][col].terrain = '#'
                     self.walkable[row][col] = False
-        print('Made walls.')
+        logging.debug('Made walls.')
 
     def make_obstacles(self):
-        print('Making obstacles.')
+        logging.debug('Making obstacles.')
         obstacles = set()
         n_obs = int((self.height - 2) * (self.width - 2) * .2)
         while len(obstacles) < n_obs:
@@ -47,7 +48,7 @@ class Map(_Map):
             obstacles.add(space)
             self.spaces[space[1]][space[0]].terrain = 'X'
             self.walkable[space[1]][space[0]] = False
-        print('Made obstaccles.')
+        logging.debug('Made obstaccles.')
 
     def space_is_in_bounds(self, row, col):
         if col >= 0 and col <= self.width - 1:

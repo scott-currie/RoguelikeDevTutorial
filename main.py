@@ -1,3 +1,4 @@
+import logging
 import tcod
 from roguelike.map import Map
 from roguelike.space import Space
@@ -11,20 +12,21 @@ SCR_HEIGHT = 21
 
 
 def main():
+    logging.basicConfig(level=logging.DEBUG)
     tcod.console_set_custom_font(
         'arial10x10.png', tcod.FONT_TYPE_GREYSCALE | tcod.FONT_LAYOUT_TCOD)
     tcod.console_init_root(SCR_WIDTH, SCR_HEIGHT,
                            'My cool console.', order="C")
     tcod.console_set_default_foreground(0, tcod.yellow)
-    print('Ready to make map.')
+    logging.debug('Ready to make map.')
     lvl_map = Map(SCR_HEIGHT - 1, SCR_WIDTH)
-    print('Ready to make player.')
+    logging.debug('Ready to make player.')
     player = Player(*lvl_map.get_random_legal_space())
     monster = Monster(*lvl_map.get_random_legal_space())
     actors = [player, monster]
-    print('Ready to render map to console.')
+    logging.debug('Ready to render map to console.')
     lvl_map.render()
-    print('Ready to enter main loop.')
+    logging.debug('Ready to enter main loop.')
     next_actor = True
     # Enter main loop
     while not tcod.console_is_window_closed():
