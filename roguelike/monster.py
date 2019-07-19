@@ -13,7 +13,15 @@ class Monster(Character):
         for actor in actors:
             if isinstance(actor, Player):
                 player = actor
+        if self.is_adjacent_player(player):
+            return self.row, self.col
         astar = tcod.path.AStar(lvl_map)
         _path = astar.get_path(self.col, self.row, player.col, player.row)
         print(_path)
         return _path[0][1], _path[0][0]
+
+    def is_adjacent_player(self, player):
+        if self.col >= player.col - 1 and self.col <= player.col + 1:
+            if self.row >= player.row - 1 and self.row <= player.row + 1:
+                return True
+        return False
