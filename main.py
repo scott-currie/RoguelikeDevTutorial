@@ -36,8 +36,6 @@ def main():
             # Get next actor in queue
             actor = actors.pop()
             next_actor = False
-        print('turn=', actor)
-        print('actors=', actors)
         # Move the actors
         if actor.move(kp, lvl_map, actors):
             next_actor = True
@@ -45,9 +43,7 @@ def main():
         actor.render()
 
         if next_actor:
-            print(f'Pushing {actor} into the queue.')
             actors.insert(0, actor)
-            print('Actors after push:', actors)
         # Update the actor position
         update_position_display(player)
         tcod.console_flush()
