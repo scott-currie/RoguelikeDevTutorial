@@ -1,5 +1,6 @@
 import logging
 import tcod
+from roguelike.actors import Actors
 from roguelike.map import Map
 from roguelike.space import Space
 from roguelike.player import Player
@@ -23,7 +24,9 @@ def main():
     logging.debug('Ready to make player.')
     player = Player(*lvl_map.get_random_legal_space())
     monster = Monster(*lvl_map.get_random_legal_space())
-    actors = [player, monster]
+    actors = Actors()
+    actors.player = player
+    actors.queue = [player, monster]
     logging.debug('Ready to render map to console.')
     lvl_map.render()
     logging.debug('Ready to enter main loop.')
@@ -34,19 +37,19 @@ def main():
         kp = tcod.console_check_for_keypress()
         if kp.vk == tcod.KEY_ESCAPE:
             return True
+        # Get next actor from the queue if we're ready
         if next_actor:
-            # Get next actor in queue
-            actor = actors.pop()
+            actor = actors.queue.pop()
             next_actor = False
-        # Move the actors
-        if actor.move(kp, lvl_map, actors):
+        # Update the actor
+        actor.update(kp, lvl_map, actors)
+        # logging.debug(f'{actor} acted = {actor.acted}')
+        if actor.acted:
+            # logging.debug(f'{actor} has acted.')
             next_actor = True
-        # Render the actors
-        actor.render()
-
-        if next_actor:
-            actors.insert(0, actor)
-        # Update the actor position
+            # Put old actor back in the queue
+            actors.queue.insert(0, actor)
+        # Update the player position
         update_position_display(player)
         tcod.console_flush()
 
