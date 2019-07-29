@@ -10,7 +10,10 @@ import time
 
 SCR_WIDTH = 20
 SCR_HEIGHT = 21
-
+PLAYER_MAX_HP = 20
+PLAYER_ATK = 2
+MONSTER_MAX_HP = 20
+MONSTER_ATK = 1
 
 def main():
     logging.basicConfig(level=logging.DEBUG)
@@ -22,8 +25,8 @@ def main():
     logging.debug('Ready to make map.')
     lvl_map = Map(SCR_HEIGHT - 1, SCR_WIDTH)
     logging.debug('Ready to make player.')
-    player = Player(*lvl_map.get_random_legal_space())
-    monster = Monster(*lvl_map.get_random_legal_space())
+    player = Player(*lvl_map.get_random_legal_space(), PLAYER_ATK, PLAYER_MAX_HP)
+    monster = Monster(*lvl_map.get_random_legal_space(), MONSTER_ATK, MONSTER_MAX_HP)
     actors = Actors()
     actors.player = player
     actors.queue = [player, monster]

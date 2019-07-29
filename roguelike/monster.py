@@ -4,10 +4,13 @@ import tcod
 
 
 class Monster(Character):
-    def __init__(self, x, y):
+    def __init__(self, x, y, atk, hp_max):
         super().__init__(x, y)
         self.symbol = 'M'
         self.color = tcod.red
+        self.atk = atk
+        self.hp_max = hp_max
+        self.hp = hp_max
 
     def get_dest(self, kp, lvl_map, actors):
         '''Find the next space to reach the player.'''
