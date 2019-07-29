@@ -14,11 +14,11 @@ class Character(object):
 
     def update(self, kp, lvl_map, actors):
         self.acted = False
-        logging.debug('About to move.')
+        # logging.debug('About to move.')
         self.move(kp, lvl_map, actors)
-        logging.debug('About to render.')
+        # logging.debug('About to render.')
         self.render()
-        logging.debug(f'{self} acted to False')
+        # logging.debug(f'{self} acted to False')
         # self.acted = False
 
     def render(self):
@@ -47,9 +47,13 @@ class Character(object):
             # Current position becomes next position
             self.row, self.col = self.row_next, self.col_next
             # moved = True
-            logging.debug(f'{self} acted to True')
+            # logging.debug(f'{self} acted to True')
             self.acted = True
-        else:
-            print(f'Can\'t go to {self.row_next, self.col_next}')
+        # else:
+            # print(f'Can\'t go to {self.row_next, self.col_next}')
         self.col_next, self.row_next = self.col, self.row
         # return moved
+
+
+    def attack(self, enemy):
+        enemy.hp -= self.atk
