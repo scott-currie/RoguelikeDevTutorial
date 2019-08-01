@@ -39,7 +39,7 @@ def main():
         # Pump events for keypress
         kp = tcod.console_check_for_keypress()
         if kp.vk == tcod.KEY_ESCAPE:
-            return True
+            return
         # Get next actor from the queue if we're ready
         if next_actor:
             actor = actors.queue.pop()
