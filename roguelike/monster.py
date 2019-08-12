@@ -17,19 +17,16 @@ class Monster(Character):
         # logging.debug('About to move.')
         if self.is_adjacent_player(actors.player):
             self.attack(actors.player)
-            self.acted = True
         else:
             self.move(kp, lvl_map, actors)
         # logging.debug('About to render.')
         self.render()
         # logging.debug(f'{self} acted to False')
-        # self.acted = False
+        ('Monster update. Acted=', self.acted)
+
 
     def get_dest(self, kp, lvl_map, actors):
         '''Find the next space to reach the player.'''
-        # for actor in actors:
-        #     if isinstance(actor, Player):
-        #         player = actor
         if self.is_adjacent_player(actors.player):
             return self.row, self.col
         astar = tcod.path.AStar(lvl_map)
