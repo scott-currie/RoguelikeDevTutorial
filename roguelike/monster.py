@@ -1,5 +1,5 @@
-from .character import Character
-from .player import Player
+from roguelike.character import Character
+from roguelike.player import Player
 import tcod
 
 
@@ -11,6 +11,19 @@ class Monster(Character):
         self.atk = atk
         self.hp_max = hp_max
         self.hp = hp_max
+
+    def update(self, kp, lvl_map, actors):
+        self.acted = False
+        # logging.debug('About to move.')
+        if self.is_adjacent_player(actors.player):
+            self.attack(actors.player)
+            self.acted = True
+        else:
+            self.move(kp, lvl_map, actors)
+        # logging.debug('About to render.')
+        self.render()
+        # logging.debug(f'{self} acted to False')
+        # self.acted = False
 
     def get_dest(self, kp, lvl_map, actors):
         '''Find the next space to reach the player.'''
