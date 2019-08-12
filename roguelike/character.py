@@ -12,14 +12,9 @@ class Character(object):
         self.loc = self.row, self.col
         self.acted = False
 
+    @abc.abstractmethod
     def update(self, kp, lvl_map, actors):
-        self.acted = False
-        # logging.debug('About to move.')
-        self.move(kp, lvl_map, actors)
-        # logging.debug('About to render.')
-        self.render()
-        # logging.debug(f'{self} acted to False')
-        # self.acted = False
+        pass
 
     def render(self):
         tcod.console_set_default_foreground(0, self.color)
@@ -30,9 +25,6 @@ class Character(object):
     def move(self, kp, lvl_map, actors):
         # moved = False
         self.row_next, self.col_next = self.get_dest(kp, lvl_map, actors)
-        # if not hasattr(self, 'is_adjacent_player'):
-        #     if (self.row_next, self.col_next) == (self.row, self.col):
-        #         return False
         # Do self move if next position dfferent than current
         if hasattr(self, 'is_adjacent_player'):
             if self.is_adjacent_player(actors.player):
