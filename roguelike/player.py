@@ -14,14 +14,15 @@ class Player(Character):
     def update(self, kp, lvl_map, actors):
         self.acted = False
         # logging.debug('About to move.')
-        # Check if destination has an enemy
-        enemy = actors.get_actor_in_space(self.row, self.col)
-        if enemy:
-            self.attack(enemy)
-            self.acted = True
-            print('Whack!')
-        else:
-            self.move(kp, lvl_map, actors)
+        self.row_next, self.col_next = self.get_dest(kp, lvl_map, actors)        
+        if kp:
+            # self.row_next, self.col_next = self.get_dest(kp, lvl_map, actors)
+            # Check if destination has an enemy
+            enemy = actors.get_actor_in_space(self.row_next, self.col_next)
+            if enemy:
+                self.attack(enemy)
+            else:
+                self.move(kp, lvl_map, actors)
         # logging.debug('About to render.')
         self.render()
         # logging.debug(f'{self} acted to False')
@@ -29,12 +30,13 @@ class Player(Character):
 
 
     def get_dest(self, kp, lvl_map, actors):
+        row_next, col_next = self.row, self.col
         if kp.vk == tcod.KEY_DOWN:
-            self.row_next += 1
+            row_next += 1
         elif kp.vk == tcod.KEY_UP:
-            self.row_next -= 1
+            row_next -= 1
         elif kp.vk == tcod.KEY_RIGHT:
-            self.col_next += 1
+            col_next += 1
         elif kp.vk == tcod.KEY_LEFT:
-            self.col_next -= 1
-        return self.row_next, self.col_next
+            col_next -= 1
+        return row_next, col_next
