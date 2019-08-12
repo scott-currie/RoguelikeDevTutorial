@@ -25,27 +25,17 @@ class Character(object):
     def move(self, kp, lvl_map, actors):
         # moved = False
         self.row_next, self.col_next = self.get_dest(kp, lvl_map, actors)
-        # Do self move if next position dfferent than current
-        if hasattr(self, 'is_adjacent_player'):
-            if self.is_adjacent_player(actors.player):
-                self.acted = True
-                return
-        else:
-            if self.row_next == self.row and self.col_next == self.col:
-                return
         if lvl_map.space_is_legal(self.row_next, self.col_next):
             # Put terrain symbol back in vacant space
             lvl_map.render_at(self.row, self.col)
             # Current position becomes next position
             self.row, self.col = self.row_next, self.col_next
-            # moved = True
             # logging.debug(f'{self} acted to True')
             self.acted = True
-        # else:
-            # print(f'Can\'t go to {self.row_next, self.col_next}')
         self.col_next, self.row_next = self.col, self.row
-        # return moved
 
 
     def attack(self, enemy):
+        print(self, 'attacked', enemy)
         enemy.hp -= self.atk
+        self.acted = True
