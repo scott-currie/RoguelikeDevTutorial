@@ -12,6 +12,7 @@ SCR_WIDTH = 20
 SCR_HEIGHT = 21
 PLAYER_MAX_HP = 20
 PLAYER_ATK = 2
+MONSTER_COUNT = 3
 MONSTER_MAX_HP = 20
 MONSTER_ATK = 1
 SLOW_DOWN_DELAY = 0
@@ -26,11 +27,12 @@ def main():
     logging.debug('Ready to make map.')
     lvl_map = Map(SCR_HEIGHT - 1, SCR_WIDTH)
     logging.debug('Ready to make player.')
-    player = Player(*lvl_map.get_random_legal_space(), PLAYER_ATK, PLAYER_MAX_HP)
-    monster = Monster(*lvl_map.get_random_legal_space(), MONSTER_ATK, MONSTER_MAX_HP)
     actors = Actors()
+    player = Player(*lvl_map.get_random_legal_space(), PLAYER_ATK, PLAYER_MAX_HP)
     actors.player = player
-    actors.queue = [player, monster]
+    actors.queue.insert(0, player)
+    for i in range(MONSTER_COUNT):
+        actors.queue.insert(0, Monster(*lvl_map.get_random_legal_space(), MONSTER_ATK, MONSTER_MAX_HP))
     logging.debug('Ready to render map to console.')
     lvl_map.render()
     logging.debug('Ready to enter main loop.')
