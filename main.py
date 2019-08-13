@@ -33,7 +33,8 @@ def main():
     logging.debug('Ready to render map to console.')
     lvl_map.render()
     logging.debug('Ready to enter main loop.')
-    next_actor = True
+    # Need to get our first actor
+    actor = actors.queue.pop()
     # Enter main loop
     while not tcod.console_is_window_closed():
         # Pump events for keypress
@@ -41,17 +42,12 @@ def main():
         if kp.vk == tcod.KEY_ESCAPE:
             return
         # Get next actor from the queue if we're ready
-        if next_actor:
+        if actor.acted:
+            actors.queue.insert(0, actor)
             actor = actors.queue.pop()
-            next_actor = False
         # Update the actor
         actor.update(kp, lvl_map, actors)
         # logging.debug(f'{actor} acted = {actor.acted}')
-        if actor.acted:
-            # logging.debug(f'{actor} has acted.')
-            next_actor = True
-            # Put old actor back in the queue
-            actors.queue.insert(0, actor)
         # Update the player position
         update_position_display(player)
         tcod.console_flush()
