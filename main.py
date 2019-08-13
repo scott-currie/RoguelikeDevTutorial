@@ -14,6 +14,7 @@ PLAYER_MAX_HP = 20
 PLAYER_ATK = 2
 MONSTER_MAX_HP = 20
 MONSTER_ATK = 1
+SLOW_DOWN_DELAY = 0
 
 def main():
     logging.basicConfig(level=logging.DEBUG)
@@ -51,6 +52,7 @@ def main():
         # Update the player position
         update_position_display(player)
         tcod.console_flush()
+        time.sleep(SLOW_DOWN_DELAY)
 
 
 def update_position_display(player):
