@@ -23,8 +23,12 @@ class Character(object):
 
     @abc.abstractmethod
     def move(self, kp, lvl_map, actors):
-        # moved = False
+        # Where do you want to go?
         self.row_next, self.col_next = self.get_dest(kp, lvl_map, actors)
+        # Nowhere? Go back.
+        if self.row_next == self.row and self.col_next == self.col:
+            return
+        # Try to move
         if lvl_map.space_is_legal(self.row_next, self.col_next):
             # Put terrain symbol back in vacant space
             lvl_map.render_at(self.row, self.col)
