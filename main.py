@@ -32,12 +32,18 @@ def main():
     actors = Actors()
     player = Player(*lvl_map.get_random_legal_space(),
                     PLAYER_ATK, PLAYER_MAX_HP)
+    # Make space under player unwalkable
+    lvl_map.walkable[player.row][player.col] = False
     actors.player = player
     actors.queue.insert(0, player)
     for _ in range(MONSTER_COUNT):
-        actors.queue.insert(0, Monster(
-            *lvl_map.get_random_legal_space(), MONSTER_ATK, MONSTER_MAX_HP))
+        monster = Monster(
+            *lvl_map.get_random_legal_space(), MONSTER_ATK, MONSTER_MAX_HP)
+        actors.queue.insert(0, monster)
         actors.queue[0].render()
+        # Make space under monster unwalkable
+        lvl_map.walkable[monster.row][monster.col] = False
+
     logging.debug('Ready to render map to console.')
 
     logging.debug('Ready to enter main loop.')
