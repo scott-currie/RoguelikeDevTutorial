@@ -47,7 +47,7 @@ class Monster(Character):
             self.col, self.row, actors.player.col, actors.player.row)
         print(_path)
         # lvl_map.walkable[self.row][self.col] = False
-        if path:
+        if _path:
             return _path[0][1], _path[0][0]
         return self.row, self.col
 
