@@ -21,7 +21,12 @@ class Monster(Character):
             self.attack(actors.player)
         else:
             self.row_next, self.col_next = self.get_dest(lvl_map, actors)
-            self.move(self.row_next, self.col_next, lvl_map, actors)
+            # Check next space is unoccupied
+            if not actors.get_actor_in_space(self.row_next, self.col_next):
+                self.move(self.row_next, self.col_next, lvl_map, actors)
+            else:
+                # No one to fight and our next space is occupied
+                self.acted = True
         # logging.debug('About to render.')
         self.render()
         # logging.debug(f'{self} acted to False')
