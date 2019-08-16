@@ -14,20 +14,19 @@ class Player(Character):
     def update(self, kp, lvl_map, actors):
         self.acted = False
         # logging.debug('About to move.')
-        self.row_next, self.col_next = self.get_dest(kp, lvl_map, actors)        
-        if kp:
-            # self.row_next, self.col_next = self.get_dest(kp, lvl_map, actors)
+        # Find out what space (if any) player wants to move to
+        self.row_next, self.col_next = self.get_dest(kp, lvl_map, actors)
+        # Check to see if the destination is different than current position
+        if self.row_next != self.row or self.col_next != self.col:
             # Check if destination has an enemy
             enemy = actors.get_actor_in_space(self.row_next, self.col_next)
             if enemy:
                 self.attack(enemy)
             else:
-                self.move(kp, lvl_map, actors)
+                self.move(self.row_next, self.col_next, lvl_map, actors)
         # logging.debug('About to render.')
         self.render()
         # logging.debug(f'{self} acted to False')
-        # self.acted = False
-
 
     def get_dest(self, kp, lvl_map, actors):
         row_next, col_next = self.row, self.col
