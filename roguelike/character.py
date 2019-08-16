@@ -24,18 +24,12 @@ class Character(object):
         if lvl_map.space_is_legal(self.row_next, self.col_next):
             # Put terrain symbol back in vacant space
             lvl_map.render_at(self.row, self.col)
-            # Make the space unoccupied
-            # lvl_map.spaces[self.row][self.col].occupied = False
-            # if lvl_map.spaces[self.row][self.col].terrain == '.':
-            #     lvl_map.walkable[self.row][self.col] = True
+            # Space we are leaving becomes walkable again
+            lvl_map.walkable[self.row][self.col] = True
             # Current position becomes next position
             self.row, self.col = self.row_next, self.col_next
-            # Make space occupied
-            # lvl_map.spaces[self.row][self.col].occupied = True
-            # Space is not walkable if there's someone on it
-            # lvl_map.walkable[self.row][self.col] = False
-            # logging.debug(f'{self} acted to True')
             self.acted = True
+        # Next and current are the same space
         self.col_next, self.row_next = self.col, self.row
 
     def attack(self, enemy):
