@@ -27,16 +27,18 @@ class Monster(Character):
         # logging.debug(f'{self} acted to False')
         ('Monster update. Acted=', self.acted)
 
-
     def get_dest(self, lvl_map, actors):
         '''Find the next space to reach the player.'''
+        # lvl_map.walkable[self.row][self.col] = True
         if self.is_adjacent_player(actors.player):
             return self.row, self.col
         astar = tcod.path.AStar(lvl_map)
         # logging.debug(f'{self} @ row={self.row}, col={self.col}')
         # logging.debug(f'{actors.player} @ row={actors.player.row}, col={actors.player.col}')
-        _path = astar.get_path(self.col, self.row, actors.player.col, actors.player.row)
+        _path = astar.get_path(
+            self.col, self.row, actors.player.col, actors.player.row)
         print(_path)
+        # lvl_map.walkable[self.row][self.col] = False
         return _path[0][1], _path[0][0]
 
     def is_adjacent_player(self, player):
