@@ -16,6 +16,8 @@ class Monster(Character):
 
     def update(self, kp, lvl_map, actors):
         self.acted = False
+        # Toggle monster's space walkable for pathfinding
+        lvl_map.walkable[self.row][self.col] = True
         # logging.debug('About to move.')
         if self.is_adjacent_player(actors.player):
             self.attack(actors.player)
@@ -28,6 +30,7 @@ class Monster(Character):
                 # No one to fight and our next space is occupied
                 self.acted = True
         # logging.debug('About to render.')
+        lvl_map.walkable[self.row][self.col] = False
         self.render()
         # logging.debug(f'{self} acted to False')
         ('Monster update. Acted=', self.acted)
