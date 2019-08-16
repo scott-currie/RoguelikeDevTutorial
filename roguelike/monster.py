@@ -47,7 +47,9 @@ class Monster(Character):
             self.col, self.row, actors.player.col, actors.player.row)
         print(_path)
         # lvl_map.walkable[self.row][self.col] = False
-        return _path[0][1], _path[0][0]
+        if path:
+            return _path[0][1], _path[0][0]
+        return self.row, self.col
 
     def is_adjacent_player(self, player):
         if self.col >= player.col - 1 and self.col <= player.col + 1:
