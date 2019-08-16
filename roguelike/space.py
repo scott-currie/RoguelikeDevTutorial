@@ -3,5 +3,4 @@ class Space(object):
         self.col = col
         self.row = row
         self.terrain = terrain
-        self.walkable = True
         self.occupied = False
