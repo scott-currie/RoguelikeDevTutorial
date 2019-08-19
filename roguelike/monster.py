@@ -1,14 +1,17 @@
 from roguelike.character import Character
 from roguelike.player import Player
 import logging
+import random
 import tcod
+
 
 
 class Monster(Character):
     def __init__(self, x, y, atk, hp_max):
         super().__init__(x, y)
         self.symbol = 'M'
-        self.color = tcod.red
+        # self.color = tcod.red
+        self.color = (random.randint(0, 256), random.randint(0, 256), random.randint(0, 256))
         self.atk = atk
         self.hp_max = hp_max
         self.hp = hp_max
