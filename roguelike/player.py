@@ -3,13 +3,10 @@ import tcod
 
 
 class Player(Character):
-    def __init__(self, x, y, atk, hp_max):
-        super().__init__(x, y)
+    def __init__(self, row, col, atk, hp_max, name):
+        super().__init__(row, col, atk, hp_max, name)
         self.symbol = '@'
-        self.color = tcod.white
-        self.atk = atk
-        self.hp_max = hp_max
-        self.hp = hp_max
+        self.color = (255, 255, 255)
 
     def update(self, kp, lvl_map, actors):
         self.acted = False
@@ -39,3 +36,7 @@ class Player(Character):
         elif kp.vk == tcod.KEY_LEFT:
             col_next -= 1
         return row_next, col_next
+
+    def check_hp(self):
+        if self.hp <= 0:
+            self.alive = False

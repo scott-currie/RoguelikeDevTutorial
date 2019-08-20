@@ -5,16 +5,14 @@ import random
 import tcod
 
 
-
 class Monster(Character):
-    def __init__(self, x, y, atk, hp_max):
-        super().__init__(x, y)
+    def __init__(self, col, row, atk, hp_max, name):
+        super().__init__(row, col, atk, hp_max, name)
         self.symbol = 'M'
         # self.color = tcod.red
-        self.color = (random.randint(0, 256), random.randint(0, 256), random.randint(0, 256))
-        self.atk = atk
-        self.hp_max = hp_max
-        self.hp = hp_max
+        self.color = (random.randint(0, 255), random.randint(
+            0, 255), random.randint(0, 255))
+
         logging.debug(f'{self} created at row={self.row}, col={self.col}')
 
     def update(self, kp, lvl_map, actors):
@@ -48,7 +46,6 @@ class Monster(Character):
         # logging.debug(f'{actors.player} @ row={actors.player.row}, col={actors.player.col}')
         _path = astar.get_path(
             self.col, self.row, actors.player.col, actors.player.row)
-        print(_path)
         # lvl_map.walkable[self.row][self.col] = False
         if _path:
             return _path[0][1], _path[0][0]
