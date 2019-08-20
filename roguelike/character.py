@@ -4,12 +4,17 @@ import tcod
 
 
 class Character(object):
-    def __init__(self, row, col):
+    def __init__(self, row, col, atk, hp_max, name):
         self.col = col
         self.col_next = col
         self.row = row
         self.row_next = row
         self.acted = False
+        self.alive = True
+        self.atk = atk
+        self.hp_max = hp_max
+        self.hp = hp_max
+        self.name = name
 
     @abc.abstractmethod
     def update(self, kp, lvl_map, actors):
@@ -33,6 +38,12 @@ class Character(object):
         self.col_next, self.row_next = self.col, self.row
 
     def attack(self, enemy):
-        print(self, 'attacked', enemy)
+        print('Whack!', self.name, 'attacked', enemy.name, 'for',
+              self.atk, 'HP leaving them', enemy.hp, 'remaining.')
         enemy.hp -= self.atk
+        enemy.check_hp()
         self.acted = True
+
+    def check_hp(self):
+        if self.hp <= 0:
+            self.alive = False
